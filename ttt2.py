@@ -1,16 +1,17 @@
 import os
 import sys
+import random
 duration = 0.1  # second
 freq = 500  # Hz
 os.system('clear')
 board = ['-'] * 10
-char_dict={}
+char_dict = {}
 character = ['X',"O"]
 end = False
 win_commbinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
-krok=1
-yn=""
-click=""
+krok = 1
+yn = ""
+click = ""
 
 def firstboard():
     print("               ,,                                                                ")                  
@@ -21,7 +22,7 @@ def firstboard():
     print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 8M^^^^^ ")
     print("     MM        MM  YM.    ,          MM      8M   MM  YM.    ,          MM      YA.   ,A9 YM.    , ")
     print("   .JMML.    .JMML. YMbmd'         .JMML.    `Moo9^Yo. YMbmd'         .JMML.     `Ybmd9'   `Mbmmd' ")
-    print("\n                                       Press p to play :)")
+    print("\n                                       Enter p to play :)")
 
 def startBoard():
     print("That are the places where you can put X or O:")
@@ -41,6 +42,19 @@ def drawBoard(board):
     print('     '  + board[1] + ' | '  + board[2] + ' | '  + board[3])
     print()
 
+def choosegamemode():
+    print("1.Muliplayer")
+    print('2.Single player')
+    x=0
+    while x not in [1,2]:
+        
+        try: 
+            x=int(input('Choose game mode: '))
+            if x in [1,2]:
+                return x    
+        except ValueError:
+            continue
+
 def chooseCharacter():
     choosencharacter=''
     while choosencharacter.upper() not in character:
@@ -57,6 +71,15 @@ def playerchoseplace(number):
         playerchoseplace(number)
     else:       
         board[n]= char_dict.get(number)
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (duration, freq))
+        refresh()
+
+def computerchoseplace():
+    n=random.randint(1, 9)
+    if board[n] in character:
+        computerchoseplace()
+    else:       
+        board[n]= char_dict.get(2)
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (duration, freq))
         refresh()
 
@@ -110,25 +133,45 @@ def refresh():
 
 def startscreen(click):  
     firstboard()
-    os.system('spd-say "welcome! to tic tac toe game! press p to play"')
+    os.system('spd-say "Welcome! To Tic Tac Toe game! Enter p to play"')
     while click.lower() != "p":
         click=input()
         os.system('clear')
         firstboard()
     os.system('clear')
-   
-   #main function
+
+def endgame(yn2):  
+    yn2=""
+    while yn2 != "n":
+        yn2 = input('Wanna play again? (y/n)')
+        if yn2 == "y":
+            restart_program()
+
+      #main function
 startscreen(click)
-char_dict = chooseCharacter()
-refresh()
-while end != True:
+game=choosegamemode()
+os.system('clear')
+if game == 1:
+    char_dict = chooseCharacter()
     refresh()
-    playerchoseplace(one_or_two(krok))
-    krok+=1
-    end = checking()
- 
-while yn != "n":
-    yn=input('Wanna play again? (y/n)')
-    if yn =="y":
-        restart_program()
+    while end != True:
+        refresh()
+        playerchoseplace(one_or_two(krok))
+        krok+=1
+        end = checking()
+if game == 2:
+    char_dict = chooseCharacter()
+    refresh()
+    while end != True:
+        refresh()
+        playerchoseplace(1)
+        end = checking()
+        if end == True:
+            endgame(yn)
+        refresh()
+        computerchoseplace()
+        end = checking()
+        if end == True:
+            endgame(yn)  
+
         
