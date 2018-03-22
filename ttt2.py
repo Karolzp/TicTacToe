@@ -1,14 +1,25 @@
-
 import os
 import sys
 os.system('clear')
 board = ['-'] * 10
-char={}
+char_dict={}
 character = ['X',"O"]
 end = False
 win_commbinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
 krok=1
 yn=""
+click=""
+
+def firstboard():
+    print("               ,,                                                                ")                  
+    print("MMP^^MM^^YMM   db               MMP^^MM^^YMM                       MMP^^MM^^YMM   ")                 
+    print("P'   MM   `7                    P'   MM   `7                       P'   MM   `7    ")                
+    print("     MM        MM   ,p6^bo           MM       ,6^Yb.   ,p6^bo           MM       ,pW^Wq.   .gP6Ya  ")
+    print("     MM        MM  6M'  OO           MM      8)   MM  6M'  OO           MM      6W'   `Wb ,M'   Yb")
+    print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 8M^^^^^ ")
+    print("     MM        MM  YM.    ,          MM      8M   MM  YM.    ,          MM      YA.   ,A9 YM.    , ")
+    print("   .JMML.    .JMML. YMbmd'         .JMML.    `Moo9^Yo. YMbmd'         .JMML.     `Ybmd9'   `Mbmmd' ")
+    print("\n                                       Press p to play :)")
 
 def startBoard():
     print("That are the places where you can put X or O:")
@@ -43,13 +54,13 @@ def playerchoseplace(number):
         print("\nThat place has been already choosen. Choose another one!")
         playerchoseplace(number)
     else:       
-        board[n]= char.get(number)
+        board[n]= char_dict.get(number)
         refresh()
 
 def chooseplace(number):
     choosenplace=0
     while choosenplace not in list(range(1,10)):       
-        choosenplace=input('Player {}({}) Choose place (1-9): '.format(number ,char.get(number)))
+        choosenplace=input('Player {}({}) Choose place (1-9): '.format(number ,char_dict.get(number)))
         try:
             if int(choosenplace) in list(range(1,10)):
                 return int(choosenplace)
@@ -61,11 +72,11 @@ def chooseplace(number):
 def checking():
     insertedXO = 0
     for a in (win_commbinations):
-        if board[a[0]] == board[a[1]] == board[a[2]] == char.get(1):
+        if board[a[0]] == board[a[1]] == board[a[2]] == char_dict.get(1):
             print("Player 1 Wins!\n")
             print("Congratulations!\n")
             return True
-        if board[a[0]] == board[a[1]] == board[a[2]] == char.get(2):
+        if board[a[0]] == board[a[1]] == board[a[2]] == char_dict.get(2):
             print("Player 2 Wins!\n")
             print("Congratulations!\n")
             return True
@@ -90,9 +101,18 @@ def refresh():
     os.system('clear')
     startBoard()
     drawBoard(board)
-  
+
+def startscreen(click):  
+    firstboard()
+    while click.lower() != "p":
+        click=input()
+        os.system('clear')
+        firstboard()
+    os.system('clear')
+   
    #main function
-char = chooseCharacter()
+startscreen(click)
+char_dict = chooseCharacter()
 refresh()
 while end != True:
     refresh()
