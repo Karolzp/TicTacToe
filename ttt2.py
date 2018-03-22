@@ -1,5 +1,7 @@
 import os
 import sys
+duration = 0.1  # second
+freq = 500  # Hz
 os.system('clear')
 board = ['-'] * 10
 char_dict={}
@@ -55,6 +57,7 @@ def playerchoseplace(number):
         playerchoseplace(number)
     else:       
         board[n]= char_dict.get(number)
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (duration, freq))
         refresh()
 
 def chooseplace(number):
@@ -84,7 +87,10 @@ def checking():
         if board[a] == "X" or board[a] == "O":
             insertedXO += 1
         if insertedXO == 8:
+            #duration = 5
             print("The game ends in a Tie\n")
+            os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1.5, 700))
+            os.system('spd-say "haha! loosers"')
             return True
 
 def one_or_two(step):
@@ -104,6 +110,7 @@ def refresh():
 
 def startscreen(click):  
     firstboard()
+    os.system('spd-say "welcome! to tic tac toe game! press p to play"')
     while click.lower() != "p":
         click=input()
         os.system('clear')
