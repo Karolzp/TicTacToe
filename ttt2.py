@@ -9,15 +9,14 @@ char_dict = {}
 character = ['X', "O"]
 end = False
 win_commbinations = [
-    [
-        1, 2, 3], [
-            4, 5, 6], [
-                7, 8, 9], [
-                    1, 4, 7], [
-                        2, 5, 8], [
-                            3, 6, 9], [
-                                1, 5, 9], [
-                                    3, 5, 7]]
+    [1, 2, 3], 
+    [4, 5, 6], 
+    [7, 8, 9], 
+    [1, 4, 7], 
+    [2, 5, 8], 
+    [3, 6, 9],
+    [1, 5, 9], 
+    [3, 5, 7]]
 krok = 1
 yn = ""
 click = ""
@@ -29,7 +28,7 @@ def firstboard():
     print("P'   MM   `7                    P'   MM   `7                       P'   MM   `7    ")
     print("     MM        MM   ,p6^bo           MM       ,6^Yb.   ,p6^bo           MM       ,pW^Wq.   .gP6Ya  ")
     print("     MM        MM  6M'  OO           MM      8)   MM  6M'  OO           MM      6W'   `Wb ,M'   Yb")
-    print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 8M^^^^^ ")
+    print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 Codecool")
     print("     MM        MM  YM.    ,          MM      8M   MM  YM.    ,          MM      YA.   ,A9 YM.    , ")
     print("   .JMML.    .JMML. YMbmd'         .JMML.    `Moo9^Yo. YMbmd'         .JMML.     `Ybmd9'   `Mbmmd' ")
     print("\n                                       Enter p to play :)")
@@ -105,20 +104,20 @@ def computerchoseplace():
 
 
 def chooseplace(number):
-    choosenplace = 0
-    while choosenplace not in list(range(1, 10)):
-        choosenplace = input(
+    place = 0
+    while place not in list(range(1, 10)):
+        place = input(
             'Player {}({}) Choose place (1-9): '.format(number, char_dict.get(number)))
         try:
-            if int(choosenplace) in list(range(1, 10)):
-                return int(choosenplace)
+            if int(place) in list(range(1, 10)):
+                return int(place)
             else:
                 print("That's not on the board. Choose number between 1 and 9!\n")
         except ValueError:
             print("That's not on the board. Choose number between 1 and 9!\n")
 
 
-def checking():
+def checking(modegame):
     insertedXO = 0
     for a in (win_commbinations):
         if board[a[0]] == board[a[1]] == board[a[2]] == char_dict.get(1):
@@ -126,8 +125,11 @@ def checking():
             print("Congratulations!\n")
             return True
         if board[a[0]] == board[a[1]] == board[a[2]] == char_dict.get(2):
-            print("Player 2 Wins!\n")
-            print("Congratulations!\n")
+            if modegame == 2:
+                print("Computer win!\n")
+            else:
+                print("Player 2 Wins!\n")
+                print("Congratulations!\n")
             return True
     for a in range(9):
         if board[a] == "X" or board[a] == "O":
@@ -175,6 +177,7 @@ def endgame(yn2):
         yn2 = input('Wanna play again? (y/n)')
         if yn2 == "y":
             restart_program()
+        refresh()
 
 
 #          main function         #
@@ -188,18 +191,20 @@ if game == 1:
         refresh()
         playerchoseplace(one_or_two(krok))
         krok += 1
-        end = checking()
+        end = checking(game)
+        if end:
+            endgame(yn)
 if game == 2:
     char_dict = chooseCharacter()
     refresh()
     while end != True:
         refresh()
         playerchoseplace(1)
-        end = checking()
+        end = checking(game)
         if end:
             endgame(yn)
         refresh()
         computerchoseplace()
-        end = checking()
+        end = checking(game)
         if end:
             endgame(yn)
