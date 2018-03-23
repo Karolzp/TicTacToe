@@ -28,7 +28,7 @@ def firstboard():
     print("P'   MM   `7                    P'   MM   `7                       P'   MM   `7    ")
     print("     MM        MM   ,p6^bo           MM       ,6^Yb.   ,p6^bo           MM       ,pW^Wq.   .gP6Ya  ")
     print("     MM        MM  6M'  OO           MM      8)   MM  6M'  OO           MM      6W'   `Wb ,M'   Yb")
-    print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 Codecool")
+    print("     MM        MM  8M                MM       ,pm9MM  8M                MM      8M     M8 \033[1;31;1mCodecool\033[1;m")
     print("     MM        MM  YM.    ,          MM      8M   MM  YM.    ,          MM      YA.   ,A9 YM.    , ")
     print("   .JMML.    .JMML. YMbmd'         .JMML.    `Moo9^Yo. YMbmd'         .JMML.     `Ybmd9'   `Mbmmd' ")
     print("\n                                       Enter p to play :)")
@@ -182,29 +182,29 @@ def endgame(yn2):
 
 #          main function         #
 startscreen(click)
-game = choosegamemode()
+gamemode = choosegamemode() #1-multi 2-single
 os.system('clear')
-if game == 1:
+if gamemode == 1:
     char_dict = chooseCharacter()
     refresh()
     while end != True:
         refresh()
         playerchoseplace(one_or_two(krok))
         krok += 1
-        end = checking(game)
+        end = checking(gamemode)
         if end:
             endgame(yn)
-if game == 2:
+if gamemode == 2:
     char_dict = chooseCharacter()
     refresh()
     while end != True:
         refresh()
         playerchoseplace(1)
-        end = checking(game)
+        end = checking(gamemode)
         if end:
             endgame(yn)
         refresh()
         computerchoseplace()
-        end = checking(game)
+        end = checking(gamemode)
         if end:
             endgame(yn)
